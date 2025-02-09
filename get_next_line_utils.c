@@ -6,7 +6,7 @@
 /*   By: marshaky <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 23:58:51 by marshaky          #+#    #+#             */
-/*   Updated: 2025/02/10 00:04:38 by marshaky         ###   ########.fr       */
+/*   Updated: 2025/02/10 00:11:38 by marshaky         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ char	*ft_strjoin(const char *s1, const char *s2)
 		++j;
 	}
 	res[i + j] = '\0';
+	free(s1);
 	return (res);
 }
 
