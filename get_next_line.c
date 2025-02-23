@@ -6,7 +6,7 @@
 /*   By: marshaky <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 00:06:10 by marshaky          #+#    #+#             */
-/*   Updated: 2025/02/24 02:02:55 by marshaky         ###   ########.fr       */
+/*   Updated: 2025/02/24 03:36:46 by marshaky         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,3 +112,17 @@ char	*get_next_line(int fd)
 		buffer = NULL;
 	return (line);
 }
+
+// #include <stdio.h>
+
+// int	main()
+// {
+// 	int	fd = open("get_next_line.h", O_RDONLY);
+
+// 	printf("%s\n", get_next_line(fd));
+// 	printf("%s\n", get_next_line(fd));
+// 	close(fd);
+// 	printf("%s\n", get_next_line(fd));
+// 	printf("%s\n", get_next_line(fd));
+// 	printf("%s\n", get_next_line(fd));
+// }
