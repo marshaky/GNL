@@ -6,67 +6,109 @@
 /*   By: marshaky <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 00:06:10 by marshaky          #+#    #+#             */
-/*   Updated: 2025/02/23 02:48:58 by marshaky         ###   ########.fr       */
+/*   Updated: 2025/02/24 02:02:55 by marshaky         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*extract_line(char *str)
+char	*ft_save_remainder(char *buffer)
 {
-	size_t	i;
-	char	*line;
+	char	*str;
+	int		i;
+	int		j;
 
 	i = 0;
-	while (str[i] && str[i] != '\n')
+	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	line = malloc(i + 2);
-	if (!line)
-		return (NULL);
-	ft_strncpy(line, str, i + 1);
-	line[i + 1] = '\0';
-	return (line);
-}
-
-char	*update_remainder(char *str)
-{
-	char	*new_remainder;
-	char	*newline_pos;
-
-	newline_pos = ft_strchr(str, '\n');
-	if (!newline_pos)
+	if (!buffer[i])
 	{
-		free(str);
+		free(buffer);
+		buffer = NULL;
 		return (NULL);
 	}
-	new_remainder = ft_strdup(newline_pos + 1);
-	free(str);
-	return (new_remainder);
+	str = (char *)malloc(sizeof(char) * (ft_strlen(buffer) - i + 1));
+	if (!str)
+		return (NULL);
+	i++;
+	j = 0;
+	while (buffer[i])
+		str[j++] = buffer[i++];
+	str[j] = '\0';
+	free(buffer);
+	return (str);
+}
+
+char	*ft_extract_line(char *buffer)
+{
+	int		i;
+	char	*str;
+
+	i = 0;
+	if (!buffer[i])
+		return (NULL);
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	str = (char *)malloc(sizeof(char) * (i + 2));
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (buffer[i] && buffer[i] != '\n')
+	{
+		str[i] = buffer[i];
+		i++;
+	}
+	if (buffer[i] == '\n')
+		str[i++] = '\n';
+	str[i] = '\0';
+	return (str);
+}
+
+char	*ft_read_until_newline(int fd, char *buffer)
+{
+	int		byte_read;
+	char	buff[BUFFER_SIZE + 1];
+
+	*buff = 0;
+	byte_read = 1;
+	while (!ft_strchr(buff, '\n') && byte_read > 0)
+	{
+		byte_read = read(fd, buff, BUFFER_SIZE);
+		if (byte_read < 0)
+		{
+			if (buffer)
+				free(buffer);
+			return (NULL);
+		}
+		buff[byte_read] = '\0';
+		if (!buffer)
+			buffer = ft_strdup(buff);
+		else
+			buffer = ft_strjoin(buffer, buff);
+	}
+	return (buffer);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*remainder = NULL;
-	char		buffer[BUFFER_SIZE + 1];
+	static char	*buffer;
 	char		*line;
-	int			bytes_read;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	if (!remainder)
-		remainder = ft_strdup("");
-	bytes_read = read(fd, buffer, BUFFER_SIZE);
-	while (bytes_read > 0)
+	if (BUFFER_SIZE <= 0 || fd < 0 || read(fd, 0, 0) < 0)
 	{
-		buffer[bytes_read] = '\0';
-		remainder = ft_strjoin(remainder, buffer);
-		if (ft_strchr(remainder, '\n'))
-			break ;
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-	}
-	if (bytes_read < 0 || (bytes_read == 0 && !remainder))
+		if (buffer)
+		{
+			free(buffer);
+			buffer = NULL;
+		}
 		return (NULL);
-	line = extract_line(remainder);
-	remainder = update_remainder(remainder);
+	}
+	buffer = ft_read_until_newline(fd, buffer);
+	if (!buffer)
+		return (NULL);
+	line = ft_extract_line(buffer);
+	buffer = ft_save_remainder(buffer);
+	if (!buffer)
+		buffer = NULL;
 	return (line);
 }
