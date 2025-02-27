@@ -6,7 +6,7 @@
 /*   By: marshaky <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 00:07:48 by marshaky          #+#    #+#             */
-/*   Updated: 2025/02/25 00:22:04 by marshaky         ###   ########.fr       */
+/*   Updated: 2025/02/25 17:30:15 by marshaky         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
-# include <limits.h>
+// # include <limits.h>
 
 char	*get_next_line(int fd);
 char	*ft_strcpy_joined(char *res, char *s1, char *s2);
