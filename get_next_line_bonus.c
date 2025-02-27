@@ -6,7 +6,7 @@
 /*   By: marshaky <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 00:07:37 by marshaky          #+#    #+#             */
-/*   Updated: 2025/02/25 17:29:16 by marshaky         ###   ########.fr       */
+/*   Updated: 2025/02/28 00:59:26 by marshaky         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,13 @@ char	*ft_save_remainder(char *buffer)
 	return (str);
 }
 
+static int	sep(char c, char a)
+{
+	if (c == a)
+		return (1);
+	return (0);
+}
+
 char	*ft_extract_line(char *buffer)
 {
 	int		i;
@@ -49,7 +56,7 @@ char	*ft_extract_line(char *buffer)
 		return (NULL);
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	str = (char *)malloc(sizeof(char) * (i + 2));
+	str = (char *)malloc(sizeof(char) * (i + (sep(buffer[i], '\n')) + 1));
 	if (!str)
 		return (NULL);
 	i = 0;
@@ -58,8 +65,11 @@ char	*ft_extract_line(char *buffer)
 		str[i] = buffer[i];
 		i++;
 	}
-	if (buffer[i] == '\n')
+	if (sep(buffer[i], '\n'))
+	{
 		str[i++] = '\n';
+		str[i] = '\0';
+	}
 	str[i] = '\0';
 	return (str);
 }

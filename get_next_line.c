@@ -6,7 +6,7 @@
 /*   By: marshaky <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 00:06:10 by marshaky          #+#    #+#             */
-/*   Updated: 2025/02/24 03:36:46 by marshaky         ###   ########.fr       */
+/*   Updated: 2025/02/28 00:57:15 by marshaky         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,15 @@ char	*ft_save_remainder(char *buffer)
 		str[j++] = buffer[i++];
 	str[j] = '\0';
 	free(buffer);
+	buffer = NULL;
 	return (str);
+}
+
+static int	sep(char c, char a)
+{
+	if (c == a)
+		return (1);
+	return (0);
 }
 
 char	*ft_extract_line(char *buffer)
@@ -49,7 +57,7 @@ char	*ft_extract_line(char *buffer)
 		return (NULL);
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	str = (char *)malloc(sizeof(char) * (i + 2));
+	str = (char *)malloc(sizeof(char) * (i + (sep(buffer[i], '\n')) + 1));
 	if (!str)
 		return (NULL);
 	i = 0;
@@ -58,8 +66,11 @@ char	*ft_extract_line(char *buffer)
 		str[i] = buffer[i];
 		i++;
 	}
-	if (buffer[i] == '\n')
+	if (sep(buffer[i], '\n'))
+	{
 		str[i++] = '\n';
+		str[i] = '\0';
+	}
 	str[i] = '\0';
 	return (str);
 }
@@ -77,7 +88,10 @@ char	*ft_read_until_newline(int fd, char *buffer)
 		if (byte_read < 0)
 		{
 			if (buffer)
+			{
 				free(buffer);
+				buffer = NULL;
+			}
 			return (NULL);
 		}
 		buff[byte_read] = '\0';
@@ -105,24 +119,23 @@ char	*get_next_line(int fd)
 	}
 	buffer = ft_read_until_newline(fd, buffer);
 	if (!buffer)
+	{
+		buffer = NULL;
 		return (NULL);
+	}
 	line = ft_extract_line(buffer);
 	buffer = ft_save_remainder(buffer);
 	if (!buffer)
 		buffer = NULL;
 	return (line);
 }
+/*
+ #include <stdio.h>
 
-// #include <stdio.h>
+ int	main()
+ {
+ 	int	fd = open("test.txt", O_RDONLY);
 
-// int	main()
-// {
-// 	int	fd = open("get_next_line.h", O_RDONLY);
-
-// 	printf("%s\n", get_next_line(fd));
-// 	printf("%s\n", get_next_line(fd));
-// 	close(fd);
-// 	printf("%s\n", get_next_line(fd));
-// 	printf("%s\n", get_next_line(fd));
-// 	printf("%s\n", get_next_line(fd));
-// }
+ 	printf("%s\n", get_next_line(fd));
+ 	printf("%s\n", get_next_line(fd));
+ }*/
