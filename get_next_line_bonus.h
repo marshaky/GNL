@@ -20,7 +20,6 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
-// # include <limits.h>
 
 char	*get_next_line(int fd);
 char	*ft_strcpy_joined(char *res, char *s1, char *s2);
