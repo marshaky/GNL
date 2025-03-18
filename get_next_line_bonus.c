@@ -6,37 +6,35 @@
 /*   By: marshaky <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 00:07:37 by marshaky          #+#    #+#             */
-/*   Updated: 2025/02/28 00:59:26 by marshaky         ###   ########.fr       */
+/*   Updated: 2025/03/19 01:29:41 by marshaky         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-char	*ft_save_remainder(char *buffer)
+char	*ft_read_until_newline(int fd, char *buffer)
 {
-	char	*str;
-	int		i;
-	int		j;
+	int		byte_read;
+	char	buff[BUFFER_SIZE + 1];
 
-	i = 0;
-	while (buffer[i] && buffer[i] != '\n')
-		i++;
-	if (!buffer[i])
+	*buff = 0;
+	byte_read = 1;
+	while (!ft_strchr(buff, '\n') && byte_read > 0)
 	{
-		free(buffer);
-		buffer = NULL;
-		return (NULL);
+		byte_read = read(fd, buff, BUFFER_SIZE);
+		if (byte_read < 0)
+		{
+			if (buffer)
+				free(buffer);
+			return (NULL);
+		}
+		buff[byte_read] = '\0';
+		if (!buffer)
+			buffer = ft_strdup(buff);
+		else
+			buffer = ft_strjoin(buffer, buff);
 	}
-	str = (char *)malloc(sizeof(char) * (ft_strlen(buffer) - i + 1));
-	if (!str)
-		return (NULL);
-	i++;
-	j = 0;
-	while (buffer[i])
-		str[j++] = buffer[i++];
-	str[j] = '\0';
-	free(buffer);
-	return (str);
+	return (buffer);
 }
 
 static int	sep(char c, char a)
@@ -74,29 +72,31 @@ char	*ft_extract_line(char *buffer)
 	return (str);
 }
 
-char	*ft_read_until_newline(int fd, char *buffer)
+char	*ft_save_remainder(char *buffer)
 {
-	int		byte_read;
-	char	buff[BUFFER_SIZE + 1];
+	char	*str;
+	int		i;
+	int		j;
 
-	*buff = 0;
-	byte_read = 1;
-	while (!ft_strchr(buff, '\n') && byte_read > 0)
+	i = 0;
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	if (!buffer[i])
 	{
-		byte_read = read(fd, buff, BUFFER_SIZE);
-		if (byte_read < 0)
-		{
-			if (buffer)
-				free(buffer);
-			return (NULL);
-		}
-		buff[byte_read] = '\0';
-		if (!buffer)
-			buffer = ft_strdup(buff);
-		else
-			buffer = ft_strjoin(buffer, buff);
+		free(buffer);
+		buffer = NULL;
+		return (NULL);
 	}
-	return (buffer);
+	str = (char *)malloc(sizeof(char) * (ft_strlen(buffer) - i + 1));
+	if (!str)
+		return (NULL);
+	i++;
+	j = 0;
+	while (buffer[i])
+		str[j++] = buffer[i++];
+	str[j] = '\0';
+	free(buffer);
+	return (str);
 }
 
 char	*get_next_line(int fd)
