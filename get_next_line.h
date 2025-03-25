@@ -6,7 +6,7 @@
 /*   By: marshaky <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 23:55:28 by marshaky          #+#    #+#             */
-/*   Updated: 2025/02/24 02:06:36 by marshaky         ###   ########.fr       */
+/*   Updated: 2025/03/26 03:20:54 by marshaky         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,9 @@
 # include <fcntl.h>
 
 char	*get_next_line(int fd);
-char	*ft_strcpy_joined(char *res, char *s1, char *s2);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strchr(const char *s, int c);
 int		ft_strlen(const char *str);
 char	*ft_strdup(const char *str);
-char	*ft_read_until_newline(int fd, char *buffer);
-char	*ft_save_remainder(char *buffer);
-char	*ft_extract_line(char *buffer);
 
 #endif

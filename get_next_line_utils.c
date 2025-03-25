@@ -6,7 +6,7 @@
 /*   By: marshaky <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 23:58:51 by marshaky          #+#    #+#             */
-/*   Updated: 2025/02/24 01:47:52 by marshaky         ###   ########.fr       */
+/*   Updated: 2025/03/26 03:22:02 by marshaky         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*ft_strchr(const char *str, int c)
 	return (NULL);
 }
 
-char	*ft_strcpy_joined(char *res, char *s1, char *s2)
+static char	*ft_strcpy_joined(char *res, char *s1, char *s2)
 {
 	int	i;
 	int	j;

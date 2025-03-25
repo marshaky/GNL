@@ -6,13 +6,13 @@
 /*   By: marshaky <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 00:07:37 by marshaky          #+#    #+#             */
-/*   Updated: 2025/03/19 01:29:41 by marshaky         ###   ########.fr       */
+/*   Updated: 2025/03/26 03:33:33 by marshaky         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-char	*ft_read_until_newline(int fd, char *buffer)
+static char	*ft_read_until_newline(int fd, char *buffer)
 {
 	int		byte_read;
 	char	buff[BUFFER_SIZE + 1];
@@ -44,7 +44,7 @@ static int	sep(char c, char a)
 	return (0);
 }
 
-char	*ft_extract_line(char *buffer)
+static char	*ft_extract_line(char *buffer)
 {
 	int		i;
 	char	*str;
@@ -72,7 +72,7 @@ char	*ft_extract_line(char *buffer)
 	return (str);
 }
 
-char	*ft_save_remainder(char *buffer)
+static char	*ft_save_remainder(char *buffer)
 {
 	char	*str;
 	int		i;
@@ -104,7 +104,7 @@ char	*get_next_line(int fd)
 	static char	*buffer[1024];
 	char		*line;
 
-	if (BUFFER_SIZE <= 0 || fd < 0 || read(fd, 0, 0) < 0)
+	if (BUFFER_SIZE <= 0 || fd < 0)
 	{
 		if (buffer[fd])
 		{
